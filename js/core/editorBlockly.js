@@ -101,7 +101,7 @@
       }, 500);
     } else {
       // Otherwise we just have the iframe
-      $('<iframe id="divblockly" class="blocky" style="display:none;border:none;" src="'+blocklyUrl+'"></iframe>').appendTo(".editor--code .editor__canvas");
+      $('<iframe id="divblockly" class="blocky" style="display:none;border:none;width:75%;max-width=75%;" src="'+blocklyUrl+'"></iframe>').appendTo(".editor--code .editor__canvas");
     }
   }
 
@@ -128,6 +128,6 @@
     getCode : getCode,
     getXML : getXML,
     setXML : setXML,
-    setVisible : setVisible,
+    setVisible : setVisible
   };
 }());

@@ -62,7 +62,7 @@
     Espruino.Core.App.openPopup({
       title: "Settings",
       contents: html,
-      position: "stretch",
+      position: "stretch"
     });
     // Handle section changes
     $(".settings .sections a").click(function() {
@@ -214,6 +214,6 @@
   Espruino.Core.MenuSettings = {
     init : init,
     show : createSettingsWindow,
-    refresh : refresh,
+    refresh : refresh
   };
 }());

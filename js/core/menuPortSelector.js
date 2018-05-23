@@ -129,7 +129,7 @@
     popup = Espruino.Core.App.openPopup({
       title: "Select a port...",
       contents: searchHtml,
-      position: "center",
+      position: "center"
     });
 
     $(".window--modal").on("click", ".list__item a", selectPort);
@@ -174,7 +174,7 @@
       Espruino.Core.Notifications.warning("Disconnected", true);
     });
 
-  };
+  }
 
   /** If we're connected, call callback, otherwise put up a connection dialog.
    * If connection succeeds, call callback - otherwise don't */

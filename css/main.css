@@ -46,3 +46,81 @@ dd {
 }
 
 *.paramStyle { background-color:#ccccff; }
+
+
+/* NEW */
+/* Style the tab */
+.tab {
+  overflow: hidden;
+  border: 1px solid #ccc;
+  border-bottom: 2px solid #3498db;
+  background-color: #f1f1f1;
+}
+
+/* Style the buttons that are used to open the tab content */
+.tab button, .file button {
+  background-color: inherit;
+  border: none;
+  float: left;
+  outline: none;
+  cursor: pointer;
+  padding: 15px 20px 10px 10px;
+  transition: 0.3s;
+  margin: 0;
+}
+
+.tablinks {
+  display: inline-block;
+  border: 2px solid lightgray;
+}
+
+/* Change background color of buttons on hover */
+.tab .tablinks:hover {
+  border-bottom: 2px solid #3498db;
+}
+
+/* Create an active/current tablink class */
+.tab .tablinks.active {
+  border-bottom: 2px solid #3498db;
+}
+
+a.closeButton {
+  display: inline-block;
+  color: gray;
+  font-size: medium;
+  text-decoration: none;
+  margin: 2px;
+}
+
+a.closeButton:hover {
+  color: black;
+}
+
+.file {
+  float: right;
+}
+
+.projectFiles ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+.file .tablinks {
+  display: flex;
+}
+
+.file .tablinks:hover {
+  background-color: lightgray;
+}
+
+.file a.closeButton {
+  right: 0;
+  position: fixed;
+  margin: 2px;
+}
+
+.addNewFile {
+  text-align: center;
+  padding-top: 30px;
+}

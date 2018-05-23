@@ -18,7 +18,7 @@
       id: "deploy",
       icon: "deploy", 
       title : "Send to Espruino", 
-      order: 400, 
+      order: 600,
       area: { 
         name: "code", 
         position: "top"
@@ -44,6 +44,6 @@
   }
   
   Espruino.Core.Send = {
-    init : init,
+    init : init
   };
 }());

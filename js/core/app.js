@@ -209,7 +209,7 @@
       close : function(){
         $(".window__overlay").remove();
       }
-    }
+    };
 
     // Append the modal overlay
     $('<div class="window__overlay"><div class="window__overlay-inner"></div></div>').appendTo(".window > .window__viewport").click(function(){
@@ -285,13 +285,13 @@
         additionalClasses = 'title-bar__button';
         break;
       case "toolbar":
-        selector = ".toolbar__buttons--" + options.area.position
+        selector = ".toolbar__buttons--" + options.area.position;
         break;
       case "terminal":
-        selector = ".editor--terminal .sidebar__buttons--" + options.area.position
+        selector = ".editor--terminal .sidebar__buttons--" + options.area.position;
         break;
       case "code":
-        selector = ".editor--code .sidebar__buttons--" + options.area.position
+        selector = ".editor--code .sidebar__buttons--" + options.area.position;
         break;
     }
 
