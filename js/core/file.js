@@ -22,12 +22,16 @@
 
     // Getting tabs from Storage
     chrome.storage.sync.get('tabs', function(data) {
-        tabs = data.tabs;
+        if(data.tabs != undefined){
+            tabs = data.tabs;
+        }
     });
 
     // Getting files from Storage
     chrome.storage.sync.get('files', function(data) {
-        files = data.files;
+        if(data.files != undefined){
+            files = data.files;
+        }
     });
 
     var previousTab = "";
@@ -92,7 +96,10 @@
     function addTabsOnInit(){
         var currentTab;
         var activeTab = "active";
-        previousTab = tabs[0][0];
+
+        if(tabs.length != 0){
+            previousTab = tabs[0][0];
+        }
 
         // Add the tabs layout and loop through Tabs array
         $('<div id="tabs" class="tab">\n').appendTo(".editor--code .editor__canvas");
