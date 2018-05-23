@@ -316,6 +316,16 @@
             if(!isItemInArray(files, fileName)) {
                 files.push([fileName, code]);
                 $(fileHtml).appendTo(".file");
+
+                // Add onClick logic to close file
+                document.getElementById('file' + fileName).addEventListener('click', function() {
+                    removeItem(this.id.substring(4), files, 'files');
+                });
+
+                // Add onClick logic to set code
+                document.getElementById('setFile' + fileName).addEventListener('click', function() {
+                    openCode(this.id.substring(7));
+                });
             }
 
             $(tabHtml).appendTo(".tab");
@@ -329,6 +339,8 @@
             document.getElementById('setTab' + fileName).addEventListener('click', function() {
                 openCode(this.id.substring(6));
             });
+
+            openCode(fileName);
 
             setTabStorage();
             setFileStorage();
