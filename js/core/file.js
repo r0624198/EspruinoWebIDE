@@ -12,6 +12,10 @@
 "use strict";
 (function () {
 
+    $.fn.exists = function () {
+        return this.length !== 0;
+    }
+    
     var currentJSFileName = "code.js";
     var currentXMLFileName = "code_blocks.xml";
     var loadFileCallback;
@@ -90,12 +94,28 @@
         });
 
         addTabsOnInit();
+        // register handlers
+        $('.tab').on('click',function(){
+            openCode($(this).data('name'));
+        });
+        $('.file').on('click',function(){
+            addToTabs($(this).data('name'));
+        });
+        $('.closeButton').on('click',function(){
+            var t = $(this);
+            var name = t.data('name');
+            if(t.data('type') == 'tab'){
+                removeItem(name, tabs, 'tabs');
+            }
+            else{
+                removeItem(name, files, 'files');
+            }
+        });
     }
 
     // Add tabs and project files on start
     function addTabsOnInit(){
         var currentTab;
-        var activeTab = "active";
 
         if(tabs.length != 0){
             previousTab = tabs[0][0];
@@ -104,49 +124,22 @@
         var parent = $(".editor--code .editor__canvas");
         
         // Add the tabs layout and loop through Tabs array
-        var tTabs = $('<div id="tabs" class="tab">\n').appendTo(parent);
+        var tTabs = $('<div class="tabs-container">\n').appendTo(parent);
+        // populate tabs row
         for (var i = 0; i < tabs.length; i++)
         {
-            currentTab = tabs[i][0];
-
-            tabHtml = createTabHTML(currentTab);
-
-            $(tabHtml).appendTo(".tab");
-
-            activeTab = "";
-
-            // Add onClick logic to close tab
-            document.getElementById('tab' + currentTab).addEventListener('click', function() {
-                removeItem(this.id.substring(3), tabs, 'tabs');
-            });
-
-            // Add onClick logic to set code
-            document.getElementById('setTab' + currentTab).addEventListener('click', function() {
-                openCode(this.id.substring(6));
-            });
+            tabHtml = createTabHTML(tabs[i][0]);
+            $(tabHtml).appendTo(".tabs-container");
         }
 
         // Add the files layout and loop through Files array
         var pf = $('<div class="projectFiles">\n').html('Files').prependTo(tTabs);
-        var file = $('<ul id="files" class="file">\n').appendTo(pf);
-
+        var file = $('<ul class="files-container">\n').appendTo(pf);
+        // populate files menu
         for (var j = 0; j < files.length; j++)
         {
-            currentTab = files[j][0];
-
-            fileHtml = createFileHTML(currentTab);
-
-            $(fileHtml).appendTo(file);
-
-            // Add onClick logic to close file
-            document.getElementById('file' + currentTab).addEventListener('click', function() {
-                removeItem(this.id.substring(4), files, 'files');
-            });
-
-            // Add onClick logic to set code
-            document.getElementById('setFile' + currentTab).addEventListener('click', function() {
-                addToTabs(this.id.substring(7));
-            });
+            fileHtml = createFileHTML(files[j][0]);
+            $(fileHtml).appendTo(".files-container");
         }
         $('</ul>\n').appendTo(file);
         $('</div></div>').appendTo(parent);
@@ -241,6 +234,7 @@
                         Espruino.Core.Code.switchToBlockly();
                         Espruino.Core.EditorBlockly.setXML(tabs[i][1]);
                     }
+                    break;
                 }
             }
             // Set the right tab active
@@ -251,24 +245,14 @@
     // Tab set active logic
     function setActive(tab){
         // Get all elements with class="tablinks" and remove the class "active"
-        // Create array from NodeList
-        var tablinks = [].slice.call(document.querySelectorAll(".tablinks"));
-
-        for (var i = 0; i < tablinks.length; i++) {
-            if (tablinks[0].tagName === 'DIV') {
-                tablinks[i].className = tablinks[i].className.replace(" active", "");
-            }
-        }
-
-        var element = document.getElementById('fullTab' + tab);
-        var previousElement = document.getElementById(tabs[0][0]);
-        previousTab = tab;
-
+        var previousElement = $('.tablinks.active');
+        $('.tablinks').removeClass('active');
+        var element = $('.tablinks').find('.tab[data-name="' + tab + '"]');
         // Check if element isn't null
-        if (element !== null) {
-            element.classList.add("active");
+        if (element.exists()) {
+            element.parent().addClass("active");
         } else {
-            previousElement.classList.add("active");
+            previousElement.parent().addClass("active");
         }
     }
 
@@ -288,39 +272,19 @@
     // Adding tab to Storage and add it to the bar
     function setTabsArray(fileName, code){
         if (!isItemInArray(tabs, fileName)) {
-            tabs.push([fileName, code]);
 
-            fileHtml = createFileHTML(fileName);
-
-            tabHtml = createTabHTML(fileName);
 
             // Check if the file isn't already in the Files array
             if(!isItemInArray(files, fileName)) {
+                tabs.push([fileName, code]);
                 files.push([fileName, code]);
-                $(fileHtml).appendTo(".file");
 
-                // Add onClick logic to close file
-                document.getElementById('file' + fileName).addEventListener('click', function() {
-                    removeItem(this.id.substring(4), files, 'files');
-                });
-
-                // Add onClick logic to set code
-                document.getElementById('setFile' + fileName).addEventListener('click', function() {
-                    openCode(this.id.substring(7));
-                });
+                fileHtml = createFileHTML(fileName);
+                $(fileHtml).appendTo(".files-container");
             }
 
-            $(tabHtml).appendTo(".tab");
-
-            // Add onClick logic to close tab
-            document.getElementById('tab' + fileName).addEventListener('click', function() {
-                removeItem(this.id.substring(3), tabs, 'tabs');
-            });
-
-            // Add onClick logic to set code
-            document.getElementById('setTab' + fileName).addEventListener('click', function() {
-                openCode(this.id.substring(6));
-            });
+            tabHtml = createTabHTML(fileName);
+            $(tabHtml).appendTo(".tabs-container");
 
             openCode(fileName);
 
@@ -451,18 +415,18 @@
 
     /* private functions */
     function createFileHTML(fileName){
-        return  '<li id="fullFile' + fileName + '">' +
+        return  '<li>' +
                 '<div class="tablinks">' +
-                '<span id="setFile' + fileName + '" title="' + fileName + '">' + fileName + '</span>' +
-                '<span id="file' + fileName + '" class="closeButton">x</span>' +
+                '<span class="file" data-name="' + fileName + '" title="' + fileName + '">' + fileName + '</span>' +
+                '<span class="closeButton" data-type="file" data-name="' + fileName + '">x</span>' +
                 '</div>' +
                 '</li>\n';
     }
     
     function createTabHTML(fileName){
-        return  '<div id="fullTab' + fileName + '" class="tablinks">' +
-                '<span id="setTab' + fileName + '" title="' + fileName + '">' + fileName + '</span>' +
-                '<span id="tab' + fileName + '" class="closeButton">x</span>' +
+        return  '<div class="tablinks">' +
+                '<span class="tab" data-name="' + fileName + '" title="' + fileName + '">' + fileName + '</span>' +
+                '<span class="closeButton" data-type="tab" data-name="' + fileName + '">x</span>' +
                 '</div>\n';
     }
     

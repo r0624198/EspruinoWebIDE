@@ -50,7 +50,7 @@ dd {
 
 /* NEW */
 /* Style the tab */
-.tab {
+.tabs-container {
     overflow-y: hidden;
     overflow-x: auto;
     border: 1px solid #ccc;
@@ -62,7 +62,7 @@ dd {
 }
 
 /* Style the buttons that are used to open the tab content */
-.tab span, .file button {
+.tabtab span, .files-container span {
     text-overflow: ellipsis;
     width: 90%;
     white-space: nowrap;
@@ -86,7 +86,7 @@ dd {
 }
 
 /* Change background color of buttons on hover */
-.tab .tablinks:hover, .tab .tablinks.active {
+.tabs-container .tablinks:hover, .tabs-container .tablinks.active {
     border: 1px solid #187fe6;
     border-bottom: 1px solid #3498db;
     background-color: #e6e6e6;
@@ -95,7 +95,7 @@ dd {
 }
 
 /* Create an active/current tablink class */
-.tab .tablinks.active {
+.tabs-container .tablinks.active {
     margin-bottom: 0;
     padding: 2px;
 }
@@ -111,10 +111,6 @@ span.closeButton {
     line-height: 13px;
     font-weight: bold;
     margin-left: 5px;
-}
-
-a.closeButton:hover {
-  background-color: #ff0000;
 }
 
 .projectFiles{
@@ -139,15 +135,15 @@ a.closeButton:hover {
     margin-left: -1px;
 }
 
-.projectFiles:hover .file {
+.projectFiles:hover .files-container {
     display: block;
 }
 
-.file .tablinks{
+.files-container .tablinks{
     border-radius: 5px;
 }
 
-.file .tablinks:hover {
+.files-container .tablinks:hover {
   background-color: lightgray;
   margin-top: 5px;
 }
