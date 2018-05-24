@@ -101,17 +101,15 @@
             previousTab = tabs[0][0];
         }
 
+        var parent = $(".editor--code .editor__canvas");
+        
         // Add the tabs layout and loop through Tabs array
-        $('<div id="tabs" class="tab">\n').appendTo(".editor--code .editor__canvas");
+        var tTabs = $('<div id="tabs" class="tab">\n').appendTo(parent);
         for (var i = 0; i < tabs.length; i++)
         {
             currentTab = tabs[i][0];
 
-            tabHtml =
-                '<div id="fullTab' + currentTab + '" class="tablinks ' + activeTab + '">' +
-                '<button id="setTab' + currentTab + '">' + currentTab + '</button>' +
-                '<a href="#" id="tab' + currentTab + '" class="closeButton"> x</a>' +
-                '</div>\n';
+            tabHtml = createTabHTML(currentTab);
 
             $(tabHtml).appendTo(".tab");
 
@@ -129,22 +127,16 @@
         }
 
         // Add the files layout and loop through Files array
-        $('<div class="projectFiles">\n').appendTo(".editor--code .editor__canvas");
-        $('<ul id="files" class="file">\n').appendTo(".projectFiles");
+        var pf = $('<div class="projectFiles">\n').html('Files').prependTo(tTabs);
+        var file = $('<ul id="files" class="file">\n').appendTo(pf);
 
         for (var j = 0; j < files.length; j++)
         {
             currentTab = files[j][0];
 
-            fileHtml =
-                '<li id="fullFile' + currentTab + '">' +
-                '<div class="tablinks">' +
-                '<button id="setFile' + currentTab + '" class="tablinks">' + currentTab + '</button>' +
-                '<a href="#" id="file' + currentTab + '" class="closeButton"> x</a>' +
-                '</div>' +
-                '</li>\n';
+            fileHtml = createFileHTML(currentTab);
 
-            $(fileHtml).appendTo(".file");
+            $(fileHtml).appendTo(file);
 
             // Add onClick logic to close file
             document.getElementById('file' + currentTab).addEventListener('click', function() {
@@ -156,8 +148,8 @@
                 addToTabs(this.id.substring(7));
             });
         }
-        $('</ul>\n').appendTo(".file");
-        $('</div></div>').appendTo(".editor--code .editor__canvas");
+        $('</ul>\n').appendTo(file);
+        $('</div></div>').appendTo(parent);
     }
 
     function saveItems(){
@@ -298,19 +290,9 @@
         if (!isItemInArray(tabs, fileName)) {
             tabs.push([fileName, code]);
 
-            fileHtml =
-                '<li id="fullFile' + fileName + '">' +
-                '<div class="tablinks">' +
-                '<button id="setFile' + fileName + '" class="tablinks">' + fileName + '</button>' +
-                '<a href="#" id="file' + fileName + '" class="closeButton"> x</a>' +
-                '</div>' +
-                '</li>\n';
+            fileHtml = createFileHTML(fileName);
 
-            tabHtml =
-                '<div id="fullTab' + fileName + '" class="tablinks">' +
-                '<button id="setTab' + fileName + '">' + fileName + '</button>' +
-                '<a href="#" id="tab' + fileName + '" class="closeButton"> x</a>' +
-                '</div>\n';
+            tabHtml = createTabHTML(fileName);
 
             // Check if the file isn't already in the Files array
             if(!isItemInArray(files, fileName)) {
@@ -467,6 +449,23 @@
         }
     }
 
+    /* private functions */
+    function createFileHTML(fileName){
+        return  '<li id="fullFile' + fileName + '">' +
+                '<div class="tablinks">' +
+                '<span id="setFile' + fileName + '" title="' + fileName + '">' + fileName + '</span>' +
+                '<span id="file' + fileName + '" class="closeButton">x</span>' +
+                '</div>' +
+                '</li>\n';
+    }
+    
+    function createTabHTML(fileName){
+        return  '<div id="fullTab' + fileName + '" class="tablinks">' +
+                '<span id="setTab' + fileName + '" title="' + fileName + '">' + fileName + '</span>' +
+                '<span id="tab' + fileName + '" class="closeButton">x</span>' +
+                '</div>\n';
+    }
+    
     Espruino.Core.File = {
         init: init,
         setTabsArray : setTabsArray,

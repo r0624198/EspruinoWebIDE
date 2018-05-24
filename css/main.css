@@ -51,73 +51,105 @@ dd {
 /* NEW */
 /* Style the tab */
 .tab {
-  overflow: hidden;
-  border: 1px solid #ccc;
-  border-bottom: 2px solid #3498db;
-  background-color: #f1f1f1;
+    overflow-y: hidden;
+    overflow-x: auto;
+    border: 1px solid #ccc;
+    border-bottom: 2px solid #3498db;
+    background-color: #f1f1f1;
+    display: flex;
+    padding: 0 3px;
+    flex-direction: row;
 }
 
 /* Style the buttons that are used to open the tab content */
-.tab button, .file button {
-  background-color: inherit;
-  border: none;
-  float: left;
-  outline: none;
-  cursor: pointer;
-  padding: 15px 20px 10px 10px;
-  transition: 0.3s;
-  margin: 0;
+.tab span, .file button {
+    text-overflow: ellipsis;
+    width: 90%;
+    white-space: nowrap;
+    overflow: hidden;
+    cursor: pointer;
 }
 
 .tablinks {
-  display: inline-block;
-  border: 2px solid lightgray;
+    border: 1px solid transparent;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: 2px;
+    border-radius: 5px 5px 0 0;
+    background-color: #3498db;
+    color: #ffffff;
+    margin-top: 5px;
+    transition: 0.15s;
+    padding: 0 2px;
+    width: 75px;
 }
 
 /* Change background color of buttons on hover */
-.tab .tablinks:hover {
-  border-bottom: 2px solid #3498db;
+.tab .tablinks:hover, .tab .tablinks.active {
+    border: 1px solid #187fe6;
+    border-bottom: 1px solid #3498db;
+    background-color: #e6e6e6;
+    margin-top: 1px;
+    color: #3e3737;
 }
 
 /* Create an active/current tablink class */
 .tab .tablinks.active {
-  border-bottom: 2px solid #3498db;
+    margin-bottom: 0;
+    padding: 2px;
 }
 
-a.closeButton {
-  display: inline-block;
-  color: gray;
-  font-size: medium;
-  text-decoration: none;
-  margin: 2px;
+span.closeButton {
+    display: inline-block;
+    color: white;
+    border-radius: 40%;
+    width: 13px;
+    height: 13px;
+    background-color: #cc1717;
+    text-align: center;
+    line-height: 13px;
+    font-weight: bold;
+    margin-left: 5px;
 }
 
 a.closeButton:hover {
-  color: black;
+  background-color: #ff0000;
 }
 
-.file {
-  float: right;
+.projectFiles{
+    margin-right: 5px;
+    border: 1px solid transparent;
+}
+
+.projectFiles:hover {
+    border-color: #595959;
+    background-color: #dcdcdc;
 }
 
 .projectFiles ul {
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
+    list-style-type: none;
+    margin: 0;
+    display: none;
+    padding: 10px;
+    position: absolute;
+    z-index: 5;
+    background-color: #dcdcdc;
+    border: 1px solid #595959;
+    margin-left: -1px;
 }
 
-.file .tablinks {
-  display: flex;
+.projectFiles:hover .file {
+    display: block;
+}
+
+.file .tablinks{
+    border-radius: 5px;
 }
 
 .file .tablinks:hover {
   background-color: lightgray;
-}
-
-.file a.closeButton {
-  right: 0;
-  position: fixed;
-  margin: 2px;
+  margin-top: 5px;
 }
 
 .addNewFile {
