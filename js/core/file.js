@@ -76,8 +76,8 @@
         });
 
         Espruino.Core.App.addIcon({
-            id: "saveItems",
-            icon: "code",
+            id: "saveAll",
+            icon: "saveAll",
             title: "Save Items",
             order: 300,
             area: {
