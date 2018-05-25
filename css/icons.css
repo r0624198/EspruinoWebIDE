@@ -240,3 +240,15 @@ a.icon-alert:hover { background-color: #f39c12; }
 .icon-network.lrg:before { background-position: 0 -2580px }
 .compact .icon-network.lrg:before,
 .icon-network.sml:before { background-position: -60px -2580px }
+
+.icon-saveAll.lrg:before { background-position: 0 -2640px }
+.compact .icon-saveAll.lrg:before,
+.icon-saveAll.sml:before { background-position: -60px -2640px }
+
+.icon-addXML.lrg:before { background-position: 0 -2700px }
+.compact .icon-addXML.lrg:before,
+.icon-addXML.sml:before { background-position: -60px -2700px }
+
+.icon-addJS.lrg:before { background-position: 0 -2760px }
+.compact .icon-addJS.lrg:before,
+.icon-addJS.sml:before { background-position: -60px -2760px }

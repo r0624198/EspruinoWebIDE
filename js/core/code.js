@@ -54,8 +54,8 @@
 
         // Setup add JavaScript file button
         Espruino.Core.App.addIcon({
-            id: "code",
-            icon: "code",
+            id: "codeAdd",
+            icon: "addJS",
             title: "Add new JavaScript file",
             order: 0,
             area: {
@@ -72,8 +72,8 @@
 
         // Setup add Blockly file button
         Espruino.Core.App.addIcon({
-            id: "block",
-            icon: "block",
+            id: "blockAdd",
+            icon: "addXML",
             title: "Add new Blockly file",
             order: 100,
             area: {
@@ -94,10 +94,12 @@
             if (Espruino.Config.CODE) {
                 code = Espruino.Config.CODE;
                 console.log("Loaded code from storage.");
-            } else {
-                // code = "var  on = false;\nsetInterval(function() {\n  on = !on;\n  LED1.write(on);\n}, 500);";
+            } else if(tabs.length != 0){
                 code = tabs[0][1];
-                console.log("No code in storage.");
+                console.log("No code in storage. Try to load from tabs");
+            }else{
+                code = "var  on = false;\nsetInterval(function() {\n  on = !on;\n  LED1.write(on);\n}, 500);";
+                console.log("No code anywhere. Use dummy default code.");
             }
             Espruino.Core.EditorJavaScript.setCode(code);
             callback(data);
