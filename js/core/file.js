@@ -14,7 +14,7 @@
 
     $.fn.exists = function () {
         return this.length !== 0;
-    }
+    };
     
     var currentJSFileName = "code.js";
     var currentXMLFileName = "code_blocks.xml";
@@ -94,20 +94,27 @@
         });
 
         addTabsOnInit();
+        addHandlers();
+    }
+
+    function addHandlers() {
         // register handlers
         $('.tab').on('click',function(){
+            console.log("handlers opencode");
             openCode($(this).data('name'));
         });
         $('.file').on('click',function(){
+            console.log("handlers addtotabs");
             addToTabs($(this).data('name'));
         });
         $('.closeButton').on('click',function(){
             var t = $(this);
             var name = t.data('name');
-            if(t.data('type') == 'tab'){
-                removeItem(name, tabs, 'tabs');
+            if(t.data('type') === 'tab'){
+                removeItem(name, tabs);
             }
             else{
+                removeItem(name, tabs, 'tabs');
                 removeItem(name, files, 'files');
             }
         });
@@ -115,16 +122,14 @@
 
     // Add tabs and project files on start
     function addTabsOnInit(){
-        var currentTab;
-
-        if(tabs.length != 0){
+        if(tabs.length !== 0){
             previousTab = tabs[0][0];
         }
 
         var parent = $(".editor--code .editor__canvas");
         
         // Add the tabs layout and loop through Tabs array
-        var tTabs = $('<div class="tabs-container">\n').appendTo(parent);
+        var tTabs = $('<div id="tabs" class="tabs-container">\n').appendTo(parent);
         // populate tabs row
         for (var i = 0; i < tabs.length; i++)
         {
@@ -134,7 +139,7 @@
 
         // Add the files layout and loop through Files array
         var pf = $('<div class="projectFiles">\n').html('Files').prependTo(tTabs);
-        var file = $('<ul class="files-container">\n').appendTo(pf);
+        var file = $('<ul id="files" class="files-container">\n').appendTo(pf);
         // populate files menu
         for (var j = 0; j < files.length; j++)
         {
@@ -179,7 +184,7 @@
     }
 
     // Remove item
-    function removeItem(item, array, arrayName){
+    function removeItem(item, array){
         for (var i = 0; i < array.length; i++) {
             // Check which item to remove
             if (array[i][0] === item) {
@@ -188,13 +193,13 @@
 
                 if (array === files) {
                     // Remove file from visible items
-                    document.getElementById(arrayName).removeChild(document.getElementById('fullFile' + item));
+                    document.getElementById('files').removeChild(document.getElementById('fullFile' + item));
                     setFileStorage();
-                } else {
-                    // Remove tab from visible items
-                    document.getElementById(arrayName).removeChild(document.getElementById('fullTab' + item));
-                    setTabStorage();
                 }
+
+                // Remove tab from visible items
+                document.getElementById('tabs').removeChild(document.getElementById('fullTab' + item));
+                setTabStorage();
             }
         }
     }
@@ -213,8 +218,12 @@
 
         // Check if tab is inactive
         if (!isActive(tab)){
+
+            console.log(index);
+
             if (index !== undefined) {
                 if(tabs[index][1] !== code) {
+                    console.log("works");
                     tabs[index][1] = code;
                     files[indexFile][1] = code;
                     setTabStorage();
@@ -239,6 +248,7 @@
             }
             // Set the right tab active
             setActive(tab);
+            previousTab = tab;
         }
     }
 
@@ -271,12 +281,14 @@
 
     // Adding tab to Storage and add it to the bar
     function setTabsArray(fileName, code){
+        console.log("setTabsArray");
+
         if (!isItemInArray(tabs, fileName)) {
 
+            tabs.push([fileName, code]);
 
             // Check if the file isn't already in the Files array
             if(!isItemInArray(files, fileName)) {
-                tabs.push([fileName, code]);
                 files.push([fileName, code]);
 
                 fileHtml = createFileHTML(fileName);
@@ -286,6 +298,7 @@
             tabHtml = createTabHTML(fileName);
             $(tabHtml).appendTo(".tabs-container");
 
+            addHandlers();
             openCode(fileName);
 
             setTabStorage();
@@ -415,7 +428,7 @@
 
     /* private functions */
     function createFileHTML(fileName){
-        return  '<li>' +
+        return  '<li id="fullFile' + fileName + '">' +
                 '<div class="tablinks">' +
                 '<span class="file" data-name="' + fileName + '" title="' + fileName + '">' + fileName + '</span>' +
                 '<span class="closeButton" data-type="file" data-name="' + fileName + '">x</span>' +
@@ -424,7 +437,7 @@
     }
     
     function createTabHTML(fileName){
-        return  '<div class="tablinks">' +
+        return  '<div id="fullTab' + fileName + '" class="tablinks">' +
                 '<span class="tab" data-name="' + fileName + '" title="' + fileName + '">' + fileName + '</span>' +
                 '<span class="closeButton" data-type="tab" data-name="' + fileName + '">x</span>' +
                 '</div>\n';
