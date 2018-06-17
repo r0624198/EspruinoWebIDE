@@ -50,26 +50,22 @@ dd {
 
 /* NEW */
 /* Style the tab */
-.tabs-container {
+.tabs-container, #project-container {
     overflow-y: hidden;
     overflow-x: auto;
+    display: flex;
+}
+
+#project-container {
     border: 1px solid #ccc;
     border-bottom: 2px solid #3498db;
     background-color: #f1f1f1;
-    display: flex;
     padding: 0 3px;
     flex-direction: row;
+    height: 25px;
 }
 
 /* Style the buttons that are used to open the tab content */
-.tabtab span, .files-container span {
-    text-overflow: ellipsis;
-    width: 90%;
-    white-space: nowrap;
-    overflow: hidden;
-    cursor: pointer;
-}
-
 .tablinks {
     border: 1px solid transparent;
     display: flex;
@@ -83,6 +79,14 @@ dd {
     transition: 0.15s;
     padding: 0 2px;
     width: 75px;
+}
+
+.tablinks span {
+    text-overflow: ellipsis;
+    width: 90%;
+    white-space: nowrap;
+    overflow: hidden;
+    cursor: pointer;
 }
 
 /* Change background color of buttons on hover */

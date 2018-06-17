@@ -14,7 +14,7 @@
 
     $.fn.exists = function () {
         return this.length !== 0;
-    }
+    };
     
     var currentJSFileName = "code.js";
     var currentXMLFileName = "code_blocks.xml";
@@ -95,13 +95,13 @@
 
         addTabsOnInit();
         // register handlers
-        $('.tab').on('click',function(){
+        $('.tabs-container').on('click', '.tab',function(){
             openCode($(this).data('name'));
         });
-        $('.file').on('click',function(){
+        $('.files-container').on('click', '.file',function(){
             addToTabs($(this).data('name'));
         });
-        $('.closeButton').on('click',function(){
+        $('#project-container').on('click', '.closeButton',function(){
             var t = $(this);
             var name = t.data('name');
             if(t.data('type') == 'tab'){
@@ -124,7 +124,8 @@
         var parent = $(".editor--code .editor__canvas");
         
         // Add the tabs layout and loop through Tabs array
-        var tTabs = $('<div class="tabs-container">\n').appendTo(parent);
+        var tParent = $('<div id="project-container">\n').appendTo(parent);
+        var tTabs = $('<div class="tabs-container">\n').appendTo(tParent);
         // populate tabs row
         for (var i = 0; i < tabs.length; i++)
         {
@@ -133,7 +134,7 @@
         }
 
         // Add the files layout and loop through Files array
-        var pf = $('<div class="projectFiles">\n').html('Files').prependTo(tTabs);
+        var pf = $('<div class="projectFiles">\n').html('Files').prependTo(tParent);
         var file = $('<ul class="files-container">\n').appendTo(pf);
         // populate files menu
         for (var j = 0; j < files.length; j++)
@@ -186,13 +187,15 @@
                 // Remove item from array
                 array.splice(i, 1);
 
-                if (array === files) {
+                if (arrayName === 'files') {
                     // Remove file from visible items
-                    document.getElementById(arrayName).removeChild(document.getElementById('fullFile' + item));
+                    $('.files-container').find('.file[data-name="' + item + '"]').parent().parent().remove();
+                    console.log("Remove file with name '" + item + "'");
                     setFileStorage();
                 } else {
                     // Remove tab from visible items
-                    document.getElementById(arrayName).removeChild(document.getElementById('fullTab' + item));
+                    var element = $('.tabs-container').find('.tab[data-name="' + item + '"]').parent().remove();
+                    console.log("Remove tab with name '" + item + "'");
                     setTabStorage();
                 }
             }
@@ -273,10 +276,10 @@
     function setTabsArray(fileName, code){
         if (!isItemInArray(tabs, fileName)) {
 
+            tabs.push([fileName, code]);
 
             // Check if the file isn't already in the Files array
             if(!isItemInArray(files, fileName)) {
-                tabs.push([fileName, code]);
                 files.push([fileName, code]);
 
                 fileHtml = createFileHTML(fileName);
